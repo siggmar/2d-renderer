@@ -59,17 +59,17 @@ void r2d_draw_filled_circle(
 #include <stdlib.h>
 #include <string.h>
 
-static inline uint32_t r2d_random_color()
-{
+static inline uint32_t r2d_random_color() {
     return 0xFF000000 | (rand() & 0xFFFFFF);
 }
 
 // TODO make it faster, update only changed regions oder so
-static inline void r2d_clear_buffer(R2D_State *state, uint32_t color)
-{
+static inline void r2d_clear_buffer(R2D_State *state, uint32_t color) {
     if (color == 0) {
         memset(
-            state->pixel_buf, 0, state->width * state->height * sizeof(uint32_t)
+            state->pixel_buf,
+            0,
+            state->width * state->height * sizeof(uint32_t)
         );
     }
     for (int i = 0; i < state->width * state->height; i++) {
@@ -77,8 +77,8 @@ static inline void r2d_clear_buffer(R2D_State *state, uint32_t color)
     }
 }
 
-static inline void r2d_set_pixel(R2D_State *state, R2D_Point p, uint32_t color)
-{
+static inline void
+r2d_set_pixel(R2D_State *state, R2D_Point p, uint32_t color) {
 #ifndef R2D_NO_CLIPPING
     if (p.x < 0 || p.x >= state->width || p.y < 0 || p.y >= state->height) {
         return;
@@ -88,8 +88,7 @@ static inline void r2d_set_pixel(R2D_State *state, R2D_Point p, uint32_t color)
     state->pixel_buf[p.y * state->width + p.x] = color;
 }
 
-void r2d_draw_vline(R2D_State *state, R2D_Point p, int length, uint32_t color)
-{
+void r2d_draw_vline(R2D_State *state, R2D_Point p, int length, uint32_t color) {
 
     if (length == 0) return;
 
@@ -118,8 +117,7 @@ void r2d_draw_vline(R2D_State *state, R2D_Point p, int length, uint32_t color)
     }
 }
 
-void r2d_draw_hline(R2D_State *state, R2D_Point p, int length, uint32_t color)
-{
+void r2d_draw_hline(R2D_State *state, R2D_Point p, int length, uint32_t color) {
     if (length == 0) return;
 
     int y = p.y;
@@ -147,8 +145,9 @@ void r2d_draw_hline(R2D_State *state, R2D_Point p, int length, uint32_t color)
     }
 }
 
-void r2d_draw_line(R2D_State *state, R2D_Point p1, R2D_Point p2, uint32_t color)
-{
+void r2d_draw_line(
+    R2D_State *state, R2D_Point p1, R2D_Point p2, uint32_t color
+) {
     // Versteh ich absolut nicht
     // y = m*x + b
 
@@ -196,8 +195,9 @@ void r2d_draw_line(R2D_State *state, R2D_Point p1, R2D_Point p2, uint32_t color)
     }
 }
 
-void r2d_draw_rect(R2D_State *state, R2D_Point p, int w, int h, uint32_t color)
-{
+void r2d_draw_rect(
+    R2D_State *state, R2D_Point p, int w, int h, uint32_t color
+) {
     r2d_draw_vline(state, p, h, color); // left
     r2d_draw_hline(state, p, w, color); // top
 
@@ -209,8 +209,7 @@ void r2d_draw_rect(R2D_State *state, R2D_Point p, int w, int h, uint32_t color)
 
 void r2d_draw_filled_rect(
     R2D_State *state, R2D_Point p, int w, int h, uint32_t color
-)
-{
+) {
     for (int i = 0; i < h; i++) {
         for (int j = 0; j < w; j++) {
 
@@ -220,8 +219,7 @@ void r2d_draw_filled_rect(
     }
 }
 
-void r2d_draw_circle(R2D_State *state, R2D_Point p, int r, uint32_t color)
-{
+void r2d_draw_circle(R2D_State *state, R2D_Point p, int r, uint32_t color) {
     // x² + y² = r²
 
     for (int angle = 0; angle < 360; angle++) {
